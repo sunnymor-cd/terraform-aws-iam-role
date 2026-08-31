@@ -16,10 +16,11 @@ locals {
 ##-----------------------------------------------------------------------------
 
 module "aws_github_oidc_role" {
-  source = "../../modules/aws_github_oidc_role"
+  source = "./../../"
 
+  oidc_enabled         = true
   environment          = local.environment
-  role_name            = "github-oidc-terraform-role"
+  name                 = local.name
   repository           = "terraform-aws-iam-role"
   oidc_github_repos    = ["clouddrove/terraform-aws-iam-role"]
   oidc_provider_exists = true
@@ -34,9 +35,10 @@ module "aws_github_oidc_role" {
 ##-----------------------------------------------------------------------------
 
 module "aws_github_oidc_role_custom_policy" {
-  source = "../../modules/aws_github_oidc_role"
+  source = "./../../"
 
-  role_name            = "github-oidc-terraform-role-immutable"
+  oidc_enabled         = true
+  name                 = "github-oidc-terraform-role-immutable-test"
   environment          = local.environment
   oidc_provider_exists = true
   provider_url         = "https://token.actions.githubusercontent.com"
