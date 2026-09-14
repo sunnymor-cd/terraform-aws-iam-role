@@ -4,7 +4,7 @@
 variable "name" {
   type        = string
   default     = ""
-  description = "Name for tags. Also used to derive the IAM role name via the labels module when `role_name` is not set."
+  description = "Name for tags. Also used to derive the IAM role name via the labels module."
 }
 
 variable "repository" {
@@ -46,13 +46,7 @@ variable "custom_assume_role_policy" {
 
 variable "oidc_github_repos" {
   type        = list(string)
-  description = "GitHub repository names for access"
-}
-
-variable "role_name" {
-  type        = string
-  default     = ""
-  description = "Explicit name for the IAM role. If not set, falls back to the label-derived name from `name` (via the labels module)."
+  description = "GitHub repository names in org/repo format allowed to assume the OIDC role."
 }
 
 variable "oidc_provider_exists" {
@@ -71,4 +65,3 @@ variable "oidc_thumbprint_list" {
   type        = list(string)
   default     = []
 }
-

@@ -6,12 +6,6 @@ variable "name" {
   description = "Name  (e.g. `app` or `cluster`)."
 }
 
-variable "role_name" {
-  type        = string
-  default     = ""
-  description = "Explicit name for the IAM role. If not set, falls back to the label-derived name from `name` (via the labels module)."
-}
-
 variable "repository" {
   type        = string
   default     = ""
@@ -138,7 +132,7 @@ variable "oidc_provider_exists" {
 variable "oidc_github_repos" {
   type        = list(string)
   default     = []
-  description = "GitHub repository names (org/repo) allowed to assume the OIDC role."
+  description = "GitHub repository names in org/repo format allowed to assume the OIDC role. The first entry is also used as the repository tag on the IAM role."
 }
 
 variable "policy_arns" {

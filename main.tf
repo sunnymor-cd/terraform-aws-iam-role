@@ -1,12 +1,4 @@
 ##-----------------------------------------------------------------------------
-## Resolve role name: explicit role_name wins, otherwise fall back to the
-## labels-module id derived from `name`.
-##-----------------------------------------------------------------------------
-locals {
-  role_name = var.role_name != "" ? var.role_name : module.labels.id
-}
-
-##-----------------------------------------------------------------------------
 ## Labels module callled that will be used for naming and tags.
 ##-----------------------------------------------------------------------------
 module "labels" {
@@ -27,7 +19,7 @@ module "labels" {
 ##-----------------------------------------------------------------------------
 resource "aws_iam_role" "default" {
   count                 = var.enabled && !var.oidc_enabled ? 1 : 0
-  name                  = local.role_name
+  name                  = module.labels.id
   assume_role_policy    = coalesce(var.assume_role_policy, data.aws_iam_policy_document.default_assume_role[0].json)
   force_detach_policies = var.force_detach_policies
   path                  = var.path
@@ -45,8 +37,6 @@ module "github_oidc_role" {
   count  = var.oidc_enabled ? 1 : 0
 
   name                      = var.name
-  role_name                 = var.role_name
-  repository                = var.repository
   environment               = var.environment
   managedby                 = var.managedby
   label_order               = var.label_order

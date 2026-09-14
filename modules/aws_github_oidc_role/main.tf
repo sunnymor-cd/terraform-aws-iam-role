@@ -1,12 +1,4 @@
 ##-----------------------------------------------------------------------------
-## Resolve role name: explicit role_name wins, otherwise fall back to the
-## labels-module id derived from `name`.
-##-----------------------------------------------------------------------------
-locals {
-  role_name = var.role_name != "" ? var.role_name : module.labels.id
-}
-
-##-----------------------------------------------------------------------------
 ## Labels module callled that will be used for naming and tags.
 ##-----------------------------------------------------------------------------
 module "labels" {
@@ -56,7 +48,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 ##-----------------------------------------------------------------------------
 
 resource "aws_iam_role" "github" {
-  name = local.role_name
+  name = module.labels.id
   tags = module.labels.tags
   assume_role_policy = var.custom_assume_role_policy != "" ? var.custom_assume_role_policy : jsonencode({
     Version = "2012-10-17",
