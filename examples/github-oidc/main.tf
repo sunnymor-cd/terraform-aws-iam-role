@@ -5,7 +5,7 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 locals {
-  name        = "role-test"
+  name        = "clouddrove"
   environment = "test"
 
   github_oidc_provider_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
@@ -21,6 +21,7 @@ module "aws_github_oidc_role" {
   oidc_enabled         = true
   environment          = local.environment
   name                 = local.name
+  label_order          = ["environment", "name"]
   oidc_github_repos    = ["clouddrove/terraform-aws-iam-role"]
   oidc_provider_exists = true
   provider_url         = "https://token.actions.githubusercontent.com"
@@ -37,8 +38,9 @@ module "aws_github_oidc_role_custom_policy" {
   source = "./../../"
 
   oidc_enabled         = true
-  name                 = "github-oidc-terraform-role-immutable-test"
+  name                 = "github-oidc-terraform-role-immutable"
   environment          = local.environment
+  label_order          = ["environment", "name"]
   oidc_provider_exists = true
   provider_url         = "https://token.actions.githubusercontent.com"
   oidc_github_repos    = []
