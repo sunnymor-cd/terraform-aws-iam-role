@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 locals {
-  name        = "role-test"
+  name        = "clouddrove"
   environment = "test"
 }
 
@@ -14,6 +14,7 @@ module "iam-role" {
   source             = "./../../"
   name               = local.name
   environment        = local.environment
+  label_order        = ["environment", "name"]
   assume_role_policy = data.aws_iam_policy_document.default.json
   policy_enabled     = true
   policy             = data.aws_iam_policy_document.iam-policy.json
